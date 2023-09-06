@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+
 struct block_meta {
   size_t size;
   struct block_meta *next;
@@ -72,6 +73,11 @@ void *my_malloc(size_t size) {
   return (block + 1);
 }
 
+struct block_meta *get_block_ptr(void *ptr) {
+  return (struct block_meta*)ptr - 1;
+}
+
+
 void my_free(void *ptr) {
   if (!ptr) {
     return;
@@ -80,7 +86,20 @@ void my_free(void *ptr) {
   struct block_meta *block = (struct block_meta *)ptr - 1;
   assert(block->free == 0);
   block->free = 1;
+  struct block_meta* block_ptr = get_block_ptr(ptr);
+  assert(block_ptr->free == 0);
+  assert(block_ptr->magic == 0x77777777 || block_ptr->magic == 0x12345678);
+  block_ptr->free = 1;
+  block_ptr->magic = 0x55555555;
+  
 }
+
+
+
+
+
+
+
 
 int main() {
   // Test your memory allocation and deallocation here
