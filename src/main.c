@@ -42,3 +42,25 @@ struct block_meta *find_free_block(struct block_meta **last size_t size) {
 
 }
 
+struct block_meta *request_space(struct block_meta* last,size_t size){
+
+  struct block_meta *block;
+  block = sbrk(0);
+  void *request = sbrk(size + META_SIZE);
+  assert((void*) block == request);
+  if (request == (void*) -1) {
+    return NULL;
+  }
+  if (last) {
+    last -> next = block;
+  }
+  block -> size = size;
+  block -> next = NULL;
+  block -> free = 0;
+  block -> magic = 0x12345678;
+  return block;
+}
+
+
+
+
