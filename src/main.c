@@ -8,7 +8,7 @@ struct block_meta {
   size_t size;
   struct block_meta *next;
   int free;
-  int magic; // For debugging only. TODO: remove this in non-debug mode.
+  int magic; // For debugging only
 };
 
 #define META_SIZE sizeof(struct block_meta)
@@ -96,12 +96,40 @@ void my_free(void *ptr) {
 
 
 
+void *realloc(void *ptr, size_t size) {
+  if (!ptr) {
+    return my_malloc(size);
+  }
 
+  struct block_meta* block_ptr = get_block_ptr(ptr);
+  if (block_ptr->size >= size) {
+    // We have enough space. Could free some once we implement split.
+    return ptr;
+  }
 
+  // Need to really realloc. Malloc new space and free old space.
+  // Then copy old data to new space.
+  void *new_ptr;
+  new_ptr = my_malloc(size);
+  if (!new_ptr) {
+    return NULL; // TODO: set errno on failure.
+  }
+  memcpy(new_ptr, ptr, block_ptr->size);
+  my_free(ptr);
+  return new_ptr;
+}
 
-
-
-int main() {
-  // Test your memory allocation and deallocation here
+int main(){
+ 
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
