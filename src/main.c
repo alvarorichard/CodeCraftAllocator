@@ -63,6 +63,10 @@ struct block_meta *request_space(struct block_meta* last,size_t size){
   return block;
 }
 
+void *malloc(size_t size){
+
+}
+
 
 
 
