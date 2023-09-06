@@ -2,6 +2,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <stddef.h>
 
 // Estrutura de metadados para os blocos alocados
 struct block_meta {
