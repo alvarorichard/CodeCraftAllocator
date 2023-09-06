@@ -9,6 +9,7 @@ struct block_meta {
   struct block_meta *next;
   int free;
   int magic; // For debugging only
+  char data[1]; 
 };
 
 #define META_SIZE sizeof(struct block_meta)
@@ -117,6 +118,13 @@ void *realloc(void *ptr, size_t size) {
   memcpy(new_ptr, ptr, block_ptr->size);
   my_free(ptr);
   return new_ptr;
+}
+
+void *calloc(size_t nelem, size_t elsize) {
+  size_t size = nelem * elsize; 
+  void *ptr = my_malloc(size);
+  memset(ptr, 0, size);
+  return ptr;
 }
 
 int main(){
