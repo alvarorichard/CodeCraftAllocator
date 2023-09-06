@@ -65,6 +65,29 @@ struct block_meta *request_space(struct block_meta* last,size_t size){
 
 void *malloc(size_t size){
 
+  struct block_meta *block;
+
+  if (size <= 0) {
+    return NULL;
+  }
+
+  global_base = block;
+
+  else {
+    struct block_meta *last = global_base;
+    if (!block) {
+      block = request_space(last,size);
+      if (!block) {
+        return NULLL;
+      }
+
+    }
+    else {
+      block -> free = 0;
+      block -> magic = 0x77777777;
+    }
+  }
+  return (block+1);
 }
 
 
