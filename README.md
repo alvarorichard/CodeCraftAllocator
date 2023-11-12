@@ -20,7 +20,9 @@ To build and run the project, follow these steps:
 3. Open a terminal and navigate to the project directory.
 
 4. Build the project by running the following commands:
-
-   ```shell
-   xmake config --mode=debug
-   xmake
+ ```shell
+xmake config --mode=debug
+ ```
+```lua
+xmake
+```
